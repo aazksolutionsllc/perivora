@@ -2576,6 +2576,12 @@ body.demo-modal-open{
   #problem .private-ai-risk-visual{
     width:560px;
     max-width:560px;
+    /* without this, the explicit 560px width becomes this grid item's
+       minimum content size and forces the whole single-column grid track
+       (shared with the .copy text block above it) to widen to 560px too,
+       which is what was pushing all the heading/paragraph/list text off
+       the right edge of the screen */
+    min-width:0;
     /* scale continuously to fill whatever width this device actually has,
        instead of a single guessed factor: (100vw - 30px) is .wrap's real
        content width at this breakpoint, divided by this element's natural
