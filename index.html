@@ -305,7 +305,7 @@ h1.hero-title{margin:32px 0 24px;font-size:clamp(54px,5vw,76px);line-height:.99;
  .hero-visual{width:min(620px,100%);margin:auto}
 }
 @media(max-width:650px){
- .hero{padding-top:70px}.hero-visual{min-height:480px;transform:scale(.82);transform-origin:top center;margin-bottom:-80px}
+ .hero{padding-top:70px}.hero-visual{min-height:480px;transform:scale(min(calc((100vw - 30px) / 540px), .82));transform-origin:top center;margin-bottom:min(calc(480px * ((100vw - 30px) / 540px - 1)), -80px)}
  h1.hero-title{font-size:47px}.hero-copy{font-size:16px}
  .hero-node{width:118px;min-height:112px}.orbit-outer{width:430px;height:430px}.orbit-inner{width:310px;height:310px}.hero-core{width:225px;height:225px}
 }
@@ -953,9 +953,12 @@ footer p{
 @media(max-width:650px){
   .sovereign-simple{
     min-height:480px;
-    transform:scale(.82);
+    /* fills width down to a floor scale of .82 (the previous fixed value)
+       on narrower phones, instead of a single guessed factor for every
+       screen size */
+    transform:scale(min(calc((100vw - 30px) / 540px), .82));
     transform-origin:top center;
-    margin-bottom:-80px;
+    margin-bottom:min(calc(480px * ((100vw - 30px) / 540px - 1)), -80px);
   }
 }
 
@@ -2286,7 +2289,9 @@ body.demo-modal-open{
   .impact-label-text {
     font-size: clamp(1.7rem, 8vw, 2.5rem);
     letter-spacing: -0.025em;
-    white-space: nowrap;
+    white-space: normal;
+    width: auto;
+    max-width: 100%;
   }
 }
 
@@ -2565,32 +2570,21 @@ body.demo-modal-open{
   to{left:calc(100% - 7px);opacity:0}
 }
 @media(max-width:620px){
+  /* keep the exact desktop side-by-side alignment on mobile: render the
+     diagram at its natural design width, then scale the whole thing down
+     as one unit instead of restacking it into a single column */
   #problem .private-ai-risk-visual{
-    grid-template-columns:1fr;
-    grid-template-rows:auto;
-    padding:20px;
-  }
-
-  .risk-enterprise-system{
-    min-height:112px;
-    margin-top:20px;
-    padding:16px;
-  }
-  .enterprise-system-icon{
-    width:68px;
-    min-width:68px;
-    height:68px;
-  }
-  .risk-transfer{
-    height:48px;
-    transform:rotate(90deg);
-  }
-  .risk-public-ai{
-    min-height:140px;
-  }
-  .risk-reasons{
-    grid-column:1;
-    grid-template-columns:1fr;
+    width:560px;
+    max-width:560px;
+    /* scale continuously to fill whatever width this device actually has,
+       instead of a single guessed factor: (100vw - 30px) is .wrap's real
+       content width at this breakpoint, divided by this element's natural
+       560px design width */
+    transform:scale(calc((100vw - 30px) / 560px));
+    transform-origin:top left;
+    /* cancel the empty space the unscaled 460px-tall layout box would
+       otherwise still reserve below the now-smaller visible content */
+    margin-bottom:calc(82vw - 485px);
   }
 }
 
@@ -2867,7 +2861,7 @@ body.demo-modal-open{
 </div>
 
 
-<footer><p class="wrap footer-row">© 2008-2026 AA &amp; ZK Solutions LLC. All Rights Reserved. Established 2008</p></footer>
+<footer><p class="wrap footer-row">© 2008-2025 AA &amp; ZK Solutions LLC. All Rights Reserved. Established 2008</p></footer>
 
 <script>
 (() => {
